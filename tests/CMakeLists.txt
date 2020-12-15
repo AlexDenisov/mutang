@@ -76,8 +76,13 @@ target_link_libraries(mull-tests
   mull
   google-test
   json11
-  clangCodeGen
 )
+
+if (TARGET clang-cpp)
+  target_link_libraries(mull-tests clang-cpp)
+else()
+  target_link_libraries(mull-tests clangCodeGen)
+endif()
 
 target_include_directories(mull-tests PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -94,4 +99,3 @@ set_target_properties(mull-tests PROPERTIES
   )
 get_property(dependencies GLOBAL PROPERTY TEST_FIXTURES_DEPENDENCIES)
 add_dependencies(mull-tests ${dependencies})
-

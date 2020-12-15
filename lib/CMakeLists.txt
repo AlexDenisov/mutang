@@ -176,12 +176,20 @@ find_package(Threads REQUIRED)
 target_link_libraries(mull
   ${MULL_LLVM_LIBRARIES}
   sqlite3
-  clangTooling
   Threads::Threads
   irm
   mull-cxx-mutators
   Diagnostics
   )
+
+if (TARGET clang-cpp)
+  # Clang >= 9 provides a monolithic clang-cpp library which provides all clang
+  # library functions previously spread across different libraries
+  target_link_libraries(mull clang-cpp)
+else()
+  target_link_libraries(mull clangTooling)
+endif()
+
 target_include_directories(mull PUBLIC
   ${MULL_INCLUDE_DIRS}
 )
